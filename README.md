@@ -64,7 +64,7 @@ web端音视频实时通讯的demo项目，适合学习研究和二次开发。
 ├── service                                         service层
 ├── utils                                           工具包
 ├── web                                             web端
-│   ├── dist                                        打包输出
+│   ├── dist                                        打包输出目录
 │   ├── node_modules                                三方库
 │   ├── public                                      静态资源
 │   ├── src                                         前端开发目录
