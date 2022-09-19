@@ -1,11 +1,25 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/lvboda/quick-chat/middleware"
+	"github.com/lvboda/quick-chat/router"
+	"github.com/lvboda/quick-chat/utils"
+)
+
+func bootstrap() {
+	config := utils.GetConfig()
+	app := utils.CreateApp()
+
+	app.Static("/assets", "./assets")
+	middleware.RegisterMiddleware(app)
+	router.RegisterRoutes(app)
+
+	addr := fmt.Sprintf(":%s", config.Server.Port)
+	app.Run(addr)
+}
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{"msg": "hello world!"})
-	})
-	r.Run(":1001")
+	bootstrap()
 }

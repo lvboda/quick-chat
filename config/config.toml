@@ -1,0 +1,13 @@
+[server]
+  mode = "debug"
+  port = "1001"
+  jwt_key = "quick-chat"
+  token_aging = 86400
+
+[database]
+  db = "mysql"
+  host = "127.0.0.1"
+  port = "3306"
+  user = "root"
+  password = "BD1010110"
+  name = "quick_chat"
