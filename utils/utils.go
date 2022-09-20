@@ -27,8 +27,7 @@ func CreateApp() *gin.Engine {
 	return app
 }
 
-// 创建安全的文件路径
-// 没有文件夹则创建
+// CreateSafeFilePath 创建安全的文件路径
 func CreateSafeFilePath(dirNames []string, fileName string) string {
 	if len(dirNames) < 1 {
 		return ""
@@ -73,6 +72,19 @@ func MergeJson(args ...any) (map[string]any, error) {
 func UUID() string {
 	uuid := uuid.New().String()
 	return strings.ReplaceAll(uuid, "-", "")
+}
+
+// CheckAuthByUserId 通过userId判断当前有无权限
+func CheckAuthByUserId(c *gin.Context, userId string) (isAuth bool) {
+	if userInfo, has := c.Get("claims"); has {
+		if v, ok := userInfo.(*claims); ok {
+			return v.UserId == userId
+		} else {
+			return
+		}
+	} else {
+		return
+	}
 }
 
 func Validate(data any) {

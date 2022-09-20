@@ -8,7 +8,7 @@ import (
 )
 
 type claims struct {
-	Uid      string `json:"userId"`
+	UserId   string `json:"userId"`
 	Password string `json:"password"`
 	jwt.StandardClaims
 }
@@ -18,7 +18,7 @@ func CreateToken(uid string, password string) (string, error) {
 	serverConf := GetConfig().Server
 
 	claims := claims{
-		Uid:      uid,
+		UserId:   uid,
 		Password: password,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix() - 100,
@@ -33,10 +33,10 @@ func CreateToken(uid string, password string) (string, error) {
 }
 
 // ParseToken 解析token
-func ParseToken(tokenStr string) (any, int) {
+func ParseToken(tokenStr string) (*claims, int) {
 	serverConf := GetConfig().Server
 
-	token, err := jwt.ParseWithClaims(tokenStr, &jwt.MapClaims{}, func(token *jwt.Token) (any, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &claims{}, func(token *jwt.Token) (any, error) {
 		return []byte(serverConf.JwtKey), nil
 	})
 
@@ -54,5 +54,9 @@ func ParseToken(tokenStr string) (any, int) {
 		return nil, status.ERROR_TOKEN_WRONG
 	}
 
-	return token.Claims, status.SUCCESS
+	if claims, ok := token.Claims.(*claims); ok && token.Valid {
+		return claims, status.SUCCESS
+	} else {
+		return nil, status.ERROR_TOKEN_PARSE
+	}
 }

@@ -14,29 +14,25 @@ func jwtMiddleware() gin.HandlerFunc {
 		tokenList := strings.Split(c.Request.Header.Get("Authorization"), " ")
 
 		// 跳过注册和登录
-		if c.Request.URL.Path == "/user/register" || c.Request.URL.Path == "/user/login" {
+		if strings.Contains(c.Request.URL.Path, "/user/register") || strings.Contains(c.Request.URL.Path, "/user/login") {
 			c.Next()
 			return
 		}
 
 		// 判断token格式
 		if len(tokenList) == 0 || len(tokenList) != 2 || tokenList[0] != "Bearer" {
-			c.JSON(http.StatusUnauthorized, status.GetResponse(status.ERROR_TOKEN_TYPE_WRONG, nil, nil))
-			c.Abort()
+			c.AbortWithStatusJSON(http.StatusUnauthorized, status.GetResponse(status.ERROR_TOKEN_TYPE_WRONG, nil, nil))
 			return
 		}
-
-		claims, errCode := utils.ParseToken(tokenList[1])
 
 		// 过期或其他错误
-		if errCode != status.SUCCESS {
-			c.JSON(http.StatusUnauthorized, status.GetResponse(errCode, nil, nil))
-			c.Abort()
+		if claims, code := utils.ParseToken(tokenList[1]); code != status.SUCCESS {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, status.GetResponse(code, nil, nil))
 			return
+		} else {
+			// next
+			c.Set("claims", claims)
+			c.Next()
 		}
-
-		// next
-		c.Set("claims", claims)
-		c.Next()
 	}
 }

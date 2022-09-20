@@ -22,12 +22,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `chat_record`;
 CREATE TABLE `chat_record` (
-  `id` varchar(255) NOT NULL COMMENT '聊天记录ID',
+  `id` varchar(32) NOT NULL COMMENT '聊天记录id',
   `created_at` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
   `user_relation_id` varchar(36) NOT NULL COMMENT '关系id',
-  `record_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1文本类型 2语音',
+  `record_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '消息类型: 1文本类型 2语音',
   `record` varchar(255) DEFAULT NULL COMMENT '聊天内容',
   `extend` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段',
   PRIMARY KEY (`id`)
@@ -38,13 +38,13 @@ CREATE TABLE `chat_record` (
 -- ----------------------------
 DROP TABLE IF EXISTS `community`;
 CREATE TABLE `community` (
-  `id` varchar(255) NOT NULL COMMENT '群聊ID',
+  `id` varchar(32) NOT NULL COMMENT '群聊id',
   `created_at` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
   `name` varchar(30) DEFAULT NULL COMMENT '群名称',
-  `owner_id` bigint DEFAULT NULL COMMENT '群主ID',
-  `icon` varchar(250) DEFAULT NULL COMMENT '群logo',
+  `owner_id` bigint DEFAULT NULL COMMENT '群主id',
+  `icon` varchar(250) DEFAULT NULL COMMENT '群头像',
   `memo` varchar(120) DEFAULT NULL COMMENT '群描述',
   `extend` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段',
   PRIMARY KEY (`id`)
@@ -55,17 +55,17 @@ CREATE TABLE `community` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user_base`;
 CREATE TABLE `user_base` (
-  `id` varchar(255) NOT NULL COMMENT '用户ID',
+  `id` varchar(32) NOT NULL COMMENT '用户id',
   `created_at` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
   `nick_name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户昵称',
-  `user_id` varchar(32) NOT NULL DEFAULT '' COMMENT '用户id，必须唯一',
+  `user_id` varchar(32) NOT NULL DEFAULT '' COMMENT '用户id',
   `password` varchar(100) NOT NULL DEFAULT '' COMMENT '用户密码',
-  `user_role` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1正常用户 2封禁用户 3管理员',
-  `gender` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '用户性别 1男 2女',
+  `user_role` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '用户类型: 1正常用户 2封禁用户 3管理员',
+  `gender` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '用户性别: 1男 2女',
   `signature` varchar(255) NOT NULL DEFAULT '' COMMENT '用户个人签名',
-  `mobile` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号码(唯一)',
+  `mobile` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号码',
   `face` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
   `extend1` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段1',
   `extend2` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段2',
@@ -77,13 +77,13 @@ CREATE TABLE `user_base` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user_relation`;
 CREATE TABLE `user_relation` (
-  `id` varchar(255) NOT NULL COMMENT '关系ID',
+  `id` varchar(32) NOT NULL COMMENT '关系id',
   `created_at` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
   `user_id` varchar(32) NOT NULL COMMENT '用户id',
   `friend_id` varchar(32) NOT NULL COMMENT '好友id',
-  `relation_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '1一对一好友 2群聊好友',
+  `relation_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '关系类型: 1好友验证 2双向关系好友 3单项被删除关系好友',
   `memo` varchar(120) DEFAULT NULL COMMENT '描述',
   `extend` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段',
   PRIMARY KEY (`id`)

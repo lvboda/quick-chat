@@ -14,4 +14,5 @@ func registerV1Routes(app *gin.Engine) {
 	router := app.Group("/api/v1")
 	registerUserRoutes(router)
 	registerUploadRoutes(router)
+	registerRelationRoutes(router)
 }
