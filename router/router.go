@@ -15,4 +15,5 @@ func registerV1Routes(app *gin.Engine) {
 	registerUserRoutes(router)
 	registerUploadRoutes(router)
 	registerRelationRoutes(router)
+	registerChatRoutes(router)
 }

@@ -5,6 +5,13 @@ import (
 )
 
 const (
+	// ws处理类型
+	WS_PROCESS_HEART      = 0
+	WS_PROCESS_SINGLE_MSG = 1
+	WS_PROCESS_GROUP_MSG  = 2
+	WS_PROCESS_CLOSE      = 3
+
+	// 通用code
 	SUCCESS = 200
 	ERROR   = 500
 
@@ -33,6 +40,9 @@ const (
 	ERROR_RELATION_SELECT          = 2002
 	ERROR_RELATION_VALIDATE_SELECT = 2003
 	ERROR_RELATION_VALIDATE_SEND   = 2004
+
+	// code = 3000... 聊天模块错误
+	ERROR_CHAT_WS = 3000
 )
 
 var statusMsgMap = map[int]string{
@@ -61,6 +71,8 @@ var statusMsgMap = map[int]string{
 	ERROR_RELATION_SELECT:          "好友查询失败",
 	ERROR_RELATION_VALIDATE_SELECT: "验证信息查询失败",
 	ERROR_RELATION_VALIDATE_SEND:   "验证信息发送失败",
+
+	ERROR_CHAT_WS: "创建连接发生错误",
 }
 
 func GetStatusMsg(status int) string {

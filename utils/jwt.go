@@ -13,6 +13,15 @@ type claims struct {
 	jwt.StandardClaims
 }
 
+// ToClaims 转换为claims
+func ToClaims(data any) (res *claims, isOk bool) {
+	if v, ok := data.(*claims); ok {
+		return v, true
+	} else {
+		return
+	}
+}
+
 // CreateToken 生成token
 func CreateToken(uid string, password string) (string, error) {
 	serverConf := GetConfig().Server

@@ -13,6 +13,11 @@ func jwtMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenList := strings.Split(c.Request.Header.Get("Authorization"), " ")
 
+		if utils.GetConfig().Server.Mode == "debug" {
+			c.Next()
+			return
+		}
+
 		// 跳过注册和登录
 		if strings.Contains(c.Request.URL.Path, "/user/register") || strings.Contains(c.Request.URL.Path, "/user/login") {
 			c.Next()

@@ -1,7 +1,6 @@
 package apiV1
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -21,13 +20,7 @@ func UploadFile(c *gin.Context) {
 
 	// 文件路径命名规则: /assets/fulltime/年-月-日/fileName__uuid.suffix
 	date := time.Now().Format("2006-01-02")
-	var fileName string
-	if filenames := strings.Split(file.Filename, "."); len(filenames) < 2 {
-		fileName = fmt.Sprintf("%s__%s", file.Filename, utils.UUID())
-	} else {
-		fileName = strings.Join(strings.Split(file.Filename, "."), fmt.Sprintf("__%s.", utils.UUID()))
-	}
-	src := utils.CreateSafeFilePath([]string{"./assets", "fulltime", date}, fileName)
+	src := utils.CreateSafeFilePath([]string{"./assets", "fulltime", date}, utils.ToHashFileName(file.Filename))
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {
@@ -48,13 +41,7 @@ func UploadTempFile(c *gin.Context) {
 
 	// 文件路径命名规则: /assets/temp/年-月-日/fileName__uuid.suffix
 	date := time.Now().Format("2006-01-02")
-	var fileName string
-	if filenames := strings.Split(file.Filename, "."); len(filenames) < 2 {
-		fileName = fmt.Sprintf("%s__%s", file.Filename, utils.UUID())
-	} else {
-		fileName = strings.Join(strings.Split(file.Filename, "."), fmt.Sprintf("__%s.", utils.UUID()))
-	}
-	src := utils.CreateSafeFilePath([]string{"./assets", "temp", date}, fileName)
+	src := utils.CreateSafeFilePath([]string{"../assets", "fulltime", date}, utils.ToHashFileName(file.Filename))
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {

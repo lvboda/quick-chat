@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"path"
 
 	"github.com/pelletier/go-toml/v2"
 )
@@ -25,12 +26,12 @@ type config struct {
 	}
 }
 
-const configFilePatch = "config/config.toml"
+const configFilePatch = "../config/config.toml"
 
 var conf config
 
 func initConfig() {
-	file, err := os.ReadFile(configFilePatch)
+	file, err := os.ReadFile(path.Join(GetExecDirPath(), configFilePatch))
 
 	if err != nil {
 		Logger.Fatalln("配置文件读取错误: ", err)
