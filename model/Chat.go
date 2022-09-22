@@ -54,8 +54,8 @@ type Message struct {
 func ToMessage(data []byte) Message {
 	var message Message
 	err := json.Unmarshal(data, &message)
-	if err != nil {
-		utils.Logger.Errorln("json转Message结构体发生错误: ", err)
+	if err != nil && string(data) != "heart" {
+		utils.Logger.Errorln("ws:json转Message结构体发生错误: ", err)
 	}
 
 	message.Resource = data

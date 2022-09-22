@@ -12,7 +12,7 @@ import (
 func Chat(c *gin.Context) {
 	conn, err := createConnect(c)
 	if err != nil {
-		utils.Logger.Errorln("创建websocket连接发生错误: ", err)
+		utils.Logger.Errorln("ws:创建websocket连接发生错误: ", err)
 		return
 	}
 

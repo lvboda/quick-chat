@@ -24,6 +24,8 @@ func Chat(c *gin.Context, conn *websocket.Conn) {
 		return
 	}
 
+	utils.Logger.Infof("ws:用户%s连接成功", uid)
+
 	go sendLoop(uid, node)
 	go receiveLoop(uid, node)
 
@@ -121,6 +123,7 @@ func wait(uid string) {
 	for {
 		if <-closeChan {
 			globalNodeGroup.Delete(uid)
+			utils.Logger.Infof("ws:用户%s断开连接", uid)
 			return
 		}
 	}

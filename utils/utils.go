@@ -109,7 +109,3 @@ func If[T any](is bool, v1 T, v2 T) T {
 	}
 	return v2
 }
-
-func Validate(data any) {
-
-}
