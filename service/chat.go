@@ -9,14 +9,15 @@ import (
 )
 
 var globalNodeGroup = model.NewNodeGroup()
-var offlineGroup = model.NewOfflineGroup()
+var globalOfflineGroup = model.NewOfflineGroup()
 var closeChan = make(chan bool)
 
 func Chat(c *gin.Context, conn *websocket.Conn) {
 	uid := c.Param("uid")
-	// if ok := utils.CheckAuthByUserId(c, uid); !ok {
-	// 	return
-	// }
+
+	if ok := utils.CheckAuthByUserId(c, uid); !ok {
+		return
+	}
 
 	node, ok := globalNodeGroup.Add(uid, conn)
 	if !ok {
@@ -26,20 +27,42 @@ func Chat(c *gin.Context, conn *websocket.Conn) {
 	go sendLoop(uid, node)
 	go receiveLoop(uid, node)
 
+	pushGroupId(uid, node)
 	pushOfflineMsg(uid)
 	wait(uid)
 }
 
+// pushGroupId 添加群id
+func pushGroupId(uid string, node *model.Node) {
+	var query struct {
+		FriendId     string
+		RelationType int
+		RoleType     int
+	}
+	query.FriendId = uid
+	query.RelationType = 2
+	query.RoleType = 2
+	relationList, _ := model.RelationEntity{}.SelectListBy(query, query.RoleType)
+
+	for _, relation := range relationList {
+		if relation.CommunityInfo.CommunityId != "" {
+			node.GroupSets.Add(relation.CommunityInfo.CommunityId)
+		}
+	}
+}
+
+// pushOfflineMsg 离线消息推送
 func pushOfflineMsg(uid string) {
-	if msgQueue, has := offlineGroup.OfflineMap[uid]; has {
+	if msgQueue, has := globalOfflineGroup.OfflineMap[uid]; has {
 		for _, msg := range msgQueue {
 			sendMessage(msg)
 		}
 
-		offlineGroup.Delete(uid)
+		globalOfflineGroup.Delete(uid)
 	}
 }
 
+// sendLoop 发送线程
 func sendLoop(uid string, node *model.Node) {
 	for {
 		data := <-node.DataQueue
@@ -52,6 +75,7 @@ func sendLoop(uid string, node *model.Node) {
 	}
 }
 
+// receiveLoop 接收线程
 func receiveLoop(uid string, node *model.Node) {
 	for {
 		_, data, err := node.Conn.ReadMessage()
@@ -60,11 +84,12 @@ func receiveLoop(uid string, node *model.Node) {
 			return
 		}
 
-		dispatch(data)
+		dispatchProcess(data)
 	}
 }
 
-func dispatch(data []byte) {
+// dispatchProcess 分发不同的处理函数
+func dispatchProcess(data []byte) {
 	msg := model.ToMessage(data)
 
 	switch msg.ProcessType {
@@ -79,20 +104,22 @@ func dispatch(data []byte) {
 	}
 }
 
+// sendMessage 发送消息
 func sendMessage(msg model.Message) {
 	if ok := globalNodeGroup.SendMessage(msg); !ok {
-		offlineGroup.Add(msg)
+		globalOfflineGroup.Add(msg)
 	}
 }
 
+// sendGroupMessage 发送群消息
 func sendGroupMessage(msg model.Message) {
 	globalNodeGroup.SendGroupMessage(msg)
 }
 
+// wait 阻塞主线程 直到close
 func wait(uid string) {
 	for {
 		if <-closeChan {
-			utils.Logger.Debugln(111999)
 			globalNodeGroup.Delete(uid)
 			return
 		}

@@ -38,14 +38,15 @@ CREATE TABLE `chat_record` (
 -- ----------------------------
 DROP TABLE IF EXISTS `community`;
 CREATE TABLE `community` (
-  `id` varchar(32) NOT NULL COMMENT '群聊id',
+  `id` varchar(32) NOT NULL COMMENT 'id',
   `created_at` datetime(3) DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) DEFAULT NULL COMMENT '更新时间',
   `deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
-  `name` varchar(30) DEFAULT NULL COMMENT '群名称',
-  `owner_id` bigint DEFAULT NULL COMMENT '群主id',
-  `icon` varchar(250) DEFAULT NULL COMMENT '群头像',
-  `memo` varchar(120) DEFAULT NULL COMMENT '群描述',
+  `community_id` varchar(32) DEFAULT NULL COMMENT '群聊id',
+  `name` varchar(32) DEFAULT NULL COMMENT '群名称',
+  `owner_id` varchar(32) DEFAULT NULL COMMENT '群主id',
+  `face` varchar(100) DEFAULT NULL COMMENT '群头像',
+  `memo` varchar(100) DEFAULT NULL COMMENT '群描述',
   `extend` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='群聊表';
@@ -66,7 +67,7 @@ CREATE TABLE `user_base` (
   `gender` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '用户性别: 1男 2女',
   `signature` varchar(255) NOT NULL DEFAULT '' COMMENT '用户个人签名',
   `mobile` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号码',
-  `face` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
+  `face` varchar(100) NOT NULL DEFAULT '' COMMENT '头像',
   `extend1` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段1',
   `extend2` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段2',
   PRIMARY KEY (`id`)
@@ -83,7 +84,8 @@ CREATE TABLE `user_relation` (
   `deleted_at` datetime(3) DEFAULT NULL COMMENT '删除时间',
   `user_id` varchar(32) NOT NULL COMMENT '用户id',
   `friend_id` varchar(32) NOT NULL COMMENT '好友id',
-  `relation_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '关系类型: 1好友验证 2双向关系好友 3单项被删除关系好友',
+  `relation_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '关系类型: 1验证 2双向关系 3单项被删除关系',
+  `role_type` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '角色类型: 1好友 2群聊',
   `memo` varchar(120) DEFAULT NULL COMMENT '描述',
   `extend` varchar(100) NOT NULL DEFAULT '' COMMENT '扩展字段',
   PRIMARY KEY (`id`)

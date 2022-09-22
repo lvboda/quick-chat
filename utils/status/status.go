@@ -6,10 +6,14 @@ import (
 
 const (
 	// ws处理类型
-	WS_PROCESS_HEART      = 0
+	// 心跳
+	WS_PROCESS_HEART = 0
+	// 单聊
 	WS_PROCESS_SINGLE_MSG = 1
-	WS_PROCESS_GROUP_MSG  = 2
-	WS_PROCESS_CLOSE      = 3
+	// 群聊
+	WS_PROCESS_GROUP_MSG = 2
+	// 关闭ws连接
+	WS_PROCESS_CLOSE = 3
 
 	// 通用code
 	SUCCESS = 200
@@ -43,6 +47,13 @@ const (
 
 	// code = 3000... 聊天模块错误
 	ERROR_CHAT_WS = 3000
+
+	// code = 4000... 群聊模块错误
+	ERROR_COMMUNITY_ID_USED   = 4000
+	ERROR_COMMUNITY_CREATE    = 4001
+	ERROR_COMMUNITY_NOT_EXIST = 4002
+	ERROR_COMMUNITY_UPDATE    = 4003
+	ERROR_COMMUNITY_DELETE    = 4004
 )
 
 var statusMsgMap = map[int]string{
@@ -73,6 +84,12 @@ var statusMsgMap = map[int]string{
 	ERROR_RELATION_VALIDATE_SEND:   "验证信息发送失败",
 
 	ERROR_CHAT_WS: "创建连接发生错误",
+
+	ERROR_COMMUNITY_ID_USED:   "该群已存在",
+	ERROR_COMMUNITY_CREATE:    "新建群失败",
+	ERROR_COMMUNITY_NOT_EXIST: "该群不存在",
+	ERROR_COMMUNITY_UPDATE:    "群信息修改失败",
+	ERROR_COMMUNITY_DELETE:    "群解散失败",
 }
 
 func GetStatusMsg(status int) string {

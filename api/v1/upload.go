@@ -20,7 +20,7 @@ func UploadFile(c *gin.Context) {
 
 	// 文件路径命名规则: /assets/fulltime/年-月-日/fileName__uuid.suffix
 	date := time.Now().Format("2006-01-02")
-	src := utils.CreateSafeFilePath([]string{"./assets", "fulltime", date}, utils.ToHashFileName(file.Filename))
+	src := utils.CreateSafeFilePath([]string{utils.StaticAssetsPath, "fulltime", date}, utils.ToHashFileName(file.Filename))
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {
@@ -41,7 +41,7 @@ func UploadTempFile(c *gin.Context) {
 
 	// 文件路径命名规则: /assets/temp/年-月-日/fileName__uuid.suffix
 	date := time.Now().Format("2006-01-02")
-	src := utils.CreateSafeFilePath([]string{"../assets", "fulltime", date}, utils.ToHashFileName(file.Filename))
+	src := utils.CreateSafeFilePath([]string{utils.StaticAssetsPath, "fulltime", date}, utils.ToHashFileName(file.Filename))
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {

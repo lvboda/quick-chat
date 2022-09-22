@@ -8,12 +8,15 @@ import (
 
 type RelationEntity struct {
 	BaseEntity
-	UserId       string     `gorm:"type:varchar(32);not null" json:"userId" binding:"required,min=6,max=15" label:"用户id"`
-	FriendId     string     `gorm:"type:varchar(32);not null" json:"friendId" binding:"required,min=6,max=15" label:"好友id"`
-	RelationType int        `gorm:"type:int;DEFAULT:1" json:"relationType" binding:"required" label:"关系类型"`
-	Memo         string     `gorm:"type:varchar(120);DEFAULT:NULL" json:"memo" label:"描述"`
-	Extend       string     `gorm:"-" json:"extend"`
-	FriendInfo   UserEntity `gorm:"foreignKey:UserId;references:FriendId;" json:"friendInfo"`
+	UserId        string          `gorm:"type:varchar(32);not null" json:"userId" binding:"required,min=6,max=15" label:"用户id"`
+	FriendId      string          `gorm:"type:varchar(32);not null" json:"friendId" binding:"required,min=6,max=15" label:"好友id"`
+	RelationType  int             `gorm:"type:int;DEFAULT:1" json:"relationType" binding:"required" label:"关系类型"`
+	RoleType      int             `gorm:"type:int;DEFAULT:1" json:"roleType" binding:"required" label:"角色类型"`
+	Memo          string          `gorm:"type:varchar(120);DEFAULT:NULL" json:"memo" label:"描述"`
+	Extend        string          `gorm:"-" json:"extend"`
+	FriendInfo    UserEntity      `gorm:"foreignKey:UserId;references:FriendId;" json:"friendInfo"`
+	ProposerInfo  UserEntity      `gorm:"foreignKey:UserId;references:UserId;" json:"proposerInfo"`
+	CommunityInfo CommunityEntity `gorm:"foreignKey:CommunityId;references:FriendId;" json:"communityInfo"`
 }
 
 func (RelationEntity) TableName() string {
@@ -53,20 +56,22 @@ func (relation RelationEntity) Update(query any, args ...any) int {
 }
 
 // SelectBy 查单条
-func (relation RelationEntity) SelectBy(query any) (RelationEntity, int) {
+func (relation RelationEntity) SelectBy(query any, role int) (RelationEntity, int) {
 	var res RelationEntity
 
-	if err := utils.Db.Where(query).Preload("FriendInfo").First(&res).Error; err != nil {
+	db := utils.Db.Where(query)
+	if err := utils.If(role == 1, db.Preload("FriendInfo").Find(&res), db.Preload("ProposerInfo").Preload("CommunityInfo").First(&res)).Error; err != nil {
 		return res, status.ERROR
 	}
 	return res, status.SUCCESS
 }
 
 // SelectListBy 查多条
-func (relation RelationEntity) SelectListBy(query any, args ...any) ([]RelationEntity, int) {
+func (relation RelationEntity) SelectListBy(query any, role int) ([]RelationEntity, int) {
 	var res []RelationEntity
 
-	if err := utils.Db.Where(query, args...).Preload("FriendInfo").Find(&res).Error; err != nil {
+	db := utils.Db.Where(query)
+	if err := utils.If(role == 1, db.Preload("FriendInfo").Find(&res), db.Preload("ProposerInfo").Preload("CommunityInfo").Find(&res)).Error; err != nil {
 		return res, status.ERROR
 	}
 	return res, status.SUCCESS

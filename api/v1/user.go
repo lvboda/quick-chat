@@ -85,14 +85,19 @@ func QueryUserByUid(c *gin.Context) {
 // EditUserById 修改用户信息
 func EditUserById(c *gin.Context) {
 	var user model.UserEntity
-	id := c.Param("id")
+	uid := c.Param("uid")
 
-	if err := c.ShouldBindJSON(&user); err != nil || id == "" {
+	if err := c.ShouldBindJSON(&user); err != nil || uid == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
-	if code := user.Update(id); code != status.SUCCESS {
+	if !utils.CheckAuthByUserId(c, uid) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		return
+	}
+
+	if code := user.Update(uid); code != status.SUCCESS {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_USER_UPDATE, nil, nil))
 		return
 	}
@@ -103,14 +108,19 @@ func EditUserById(c *gin.Context) {
 // RemoveUserById 注销用户
 func RemoveUserById(c *gin.Context) {
 	var user model.UserEntity
-	id := c.Param("id")
+	uid := c.Param("uid")
 
-	if id == "" {
+	if uid == "" {
 		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, nil, nil))
 		return
 	}
 
-	if code := user.Delete(id); code != status.SUCCESS {
+	if !utils.CheckAuthByUserId(c, uid) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		return
+	}
+
+	if code := user.Delete(uid); code != status.SUCCESS {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_USER_DELETE, nil, nil))
 		return
 	}

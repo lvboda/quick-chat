@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -75,17 +74,23 @@ func UUID() string {
 	return strings.ReplaceAll(uuid, "-", "")
 }
 
-// CheckAuthByUserId 通过userId判断当前有无权限
-func CheckAuthByUserId(c *gin.Context, userId string) (isAuth bool) {
+// GetCurrentUserId 获取当前登陆的userId
+func GetCurrentUserId(c *gin.Context) (uid string) {
 	if userInfo, has := c.Get("claims"); has {
 		if claims, ok := ToClaims(userInfo); ok {
-			return claims.UserId == userId
+			return claims.UserId
 		} else {
 			return
 		}
 	} else {
 		return
 	}
+}
+
+// CheckAuthByUserId 通过userId判断当前有无权限
+func CheckAuthByUserId(c *gin.Context, userId string) (isAuth bool) {
+	currentUid := GetCurrentUserId(c)
+	return currentUid == userId
 }
 
 // ToHashFileName 转唯一文件名
@@ -97,12 +102,12 @@ func ToHashFileName(fileName string) (hashFileName string) {
 	return strings.Join(strings.Split(fileName, "."), fmt.Sprintf("__%s.", UUID()))
 }
 
-func GetExecDirPath() string {
-	ex, err := os.Executable()
-	if err != nil {
-		Logger.Fatalln("执行文件路径获取错误: ", err)
+// If 模拟三元运算符
+func If[T any](is bool, v1 T, v2 T) T {
+	if is {
+		return v1
 	}
-	return filepath.Dir(ex)
+	return v2
 }
 
 func Validate(data any) {

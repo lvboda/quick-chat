@@ -2,7 +2,6 @@ package utils
 
 import (
 	"os"
-	"path"
 
 	"github.com/pelletier/go-toml/v2"
 )
@@ -10,7 +9,6 @@ import (
 type config struct {
 	Server struct {
 		Mode       string
-		Host       string
 		Port       string
 		JwtKey     string `toml:"jwt_key"`
 		TokenAging int64  `toml:"token_aging"`
@@ -26,12 +24,10 @@ type config struct {
 	}
 }
 
-const configFilePatch = "../config/config.toml"
-
 var conf config
 
 func initConfig() {
-	file, err := os.ReadFile(path.Join(GetExecDirPath(), configFilePatch))
+	file, err := os.ReadFile(ConfigFilePath)
 
 	if err != nil {
 		Logger.Fatalln("配置文件读取错误: ", err)

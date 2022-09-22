@@ -10,14 +10,10 @@ import (
 
 var Logger *logrus.Logger
 
-const logDirPath = "logs"
-
-const logFileName = "quick_chat_server.log"
-
 func initLogger() {
 	Logger = logrus.New()
 
-	logFilePath := CreateSafeFilePath([]string{logDirPath}, logFileName)
+	logFilePath := CreateSafeFilePath([]string{LogDirPath}, "quick_chat_server.log")
 
 	file, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 
