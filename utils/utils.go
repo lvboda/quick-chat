@@ -23,6 +23,7 @@ func CreateApp() *gin.Engine {
 	gin.SetMode(mode)
 
 	app := gin.New()
+	app.SetTrustedProxies([]string{"127.0.0.1"})
 
 	return app
 }

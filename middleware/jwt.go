@@ -14,7 +14,13 @@ func jwtMiddleware() gin.HandlerFunc {
 		tokenList := strings.Split(c.Request.Header.Get("Authorization"), " ")
 
 		// 跳过注册和登录
-		if strings.Contains(c.Request.URL.Path, "/user/register") || strings.Contains(c.Request.URL.Path, "/user/login") {
+		if strings.Contains(c.Request.URL.Path, "/user/register") || strings.Contains(c.Request.URL.Path, "/user/login") || strings.Contains(c.Request.URL.Path, "/chat") {
+			c.Next()
+			return
+		}
+
+		// 跳过ws和静态资源
+		if strings.Contains(c.Request.URL.Path, "/chat") || strings.Contains(c.Request.URL.Path, "/assets") {
 			c.Next()
 			return
 		}
