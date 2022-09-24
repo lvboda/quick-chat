@@ -14,7 +14,7 @@ import (
 func UploadFile(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_FILE_PARSE, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_FILE_PARSE, err, nil))
 		return
 	}
 
@@ -24,7 +24,7 @@ func UploadFile(c *gin.Context) {
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_FILE_UPLOAD, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_FILE_UPLOAD, nil, nil))
 		return
 	}
 
@@ -35,7 +35,7 @@ func UploadFile(c *gin.Context) {
 func UploadTempFile(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_FILE_PARSE, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_FILE_PARSE, err, nil))
 		return
 	}
 
@@ -45,7 +45,7 @@ func UploadTempFile(c *gin.Context) {
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_FILE_UPLOAD, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_FILE_UPLOAD, nil, nil))
 		return
 	}
 

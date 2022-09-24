@@ -49,23 +49,23 @@ func EditCommunityById(c *gin.Context) {
 	query.CommunityId = c.Param("cid")
 
 	if err := c.ShouldBindJSON(&community); err != nil || query.CommunityId == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	v, code := community.SelectBy(query)
 	if code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_COMMUNITY_NOT_EXIST, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_COMMUNITY_NOT_EXIST, nil, nil))
 		return
 	}
 
 	if !utils.CheckAuthByUserId(c, v.OwnerId) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
 	if code := community.Update(query.CommunityId); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_COMMUNITY_UPDATE, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_COMMUNITY_UPDATE, nil, nil))
 		return
 	}
 
@@ -81,23 +81,23 @@ func RemoveCommunityById(c *gin.Context) {
 	query.CommunityId = c.Param("cid")
 
 	if query.CommunityId == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, nil, nil))
 		return
 	}
 
 	v, code := community.SelectBy(query)
 	if code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_COMMUNITY_NOT_EXIST, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_COMMUNITY_NOT_EXIST, nil, nil))
 		return
 	}
 
 	if !utils.CheckAuthByUserId(c, v.OwnerId) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
 	if code := community.Delete(query.CommunityId); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_COMMUNITY_DELETE, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_COMMUNITY_DELETE, nil, nil))
 		return
 	}
 
@@ -113,7 +113,7 @@ func QueryCommunityByCid(c *gin.Context) {
 	query.CommunityId = c.Param("cid")
 
 	if res, code := community.SelectBy(query); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_COMMUNITY_NOT_EXIST, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_COMMUNITY_NOT_EXIST, nil, nil))
 		return
 	} else {
 		c.JSON(http.StatusOK, status.GetResponse(code, nil, res))

@@ -20,12 +20,12 @@ func SendValidate(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&query); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	if !utils.CheckAuthByUserId(c, query.UserId) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
@@ -36,7 +36,7 @@ func SendValidate(c *gin.Context) {
 	relation.RelationType = 1
 
 	if code := relation.Insert(); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_RELATION_VALIDATE_SEND, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_RELATION_VALIDATE_SEND, nil, nil))
 		return
 	}
 
@@ -53,12 +53,12 @@ func AddRelation(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&query); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	if query.RoleType == 1 && !utils.CheckAuthByUserId(c, query.UserId) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
@@ -67,7 +67,7 @@ func AddRelation(c *gin.Context) {
 	relation.RoleType = query.RoleType
 	relation.RelationType = 2
 	if code := relation.AddFriend(); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_RELATION_ADD, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_RELATION_ADD, nil, nil))
 		return
 	}
 
@@ -84,12 +84,12 @@ func RemoveRelation(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&query); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	if query.RoleType == 1 && !utils.CheckAuthByUserId(c, query.UserId) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
@@ -98,7 +98,7 @@ func RemoveRelation(c *gin.Context) {
 	relation.RoleType = query.RoleType
 	relation.RelationType = 3
 	if code := relation.RemoveFriend(); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_RELATION_DELETE, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_RELATION_DELETE, nil, nil))
 		return
 	}
 
@@ -115,17 +115,17 @@ func QueryRelationList(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&query); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	if query.RoleType == 1 && !utils.CheckAuthByUserId(c, query.FriendId) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
 	if res, code := relation.SelectListBy(query, query.RoleType); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_RELATION_VALIDATE_SELECT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_RELATION_VALIDATE_SELECT, nil, nil))
 		return
 	} else {
 		c.JSON(http.StatusOK, status.GetResponse(code, nil, res))

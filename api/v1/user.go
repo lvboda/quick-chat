@@ -17,18 +17,18 @@ func Register(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	query.UserId = user.UserId
 	if _, code := user.SelectBy(query); code == status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USERNAME_USED, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USERNAME_USED, nil, nil))
 		return
 	}
 
 	if code := user.Insert(); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_USER_REGISTER, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_REGISTER, nil, nil))
 		return
 	}
 
@@ -44,19 +44,19 @@ func Login(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&query); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	data, code := user.SelectBy(query)
 	if code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_PASSWORD_WRONG, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_PASSWORD_WRONG, nil, nil))
 		return
 	}
 
 	token, err := utils.CreateToken(data.UserId, data.Password)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_TOKEN_CREATE, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_TOKEN_CREATE, err, nil))
 		return
 	}
 
@@ -75,7 +75,7 @@ func QueryUserByUid(c *gin.Context) {
 	query.UserId = c.Param("uid")
 
 	if res, code := user.SelectBy(query); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NOT_EXIST, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NOT_EXIST, nil, nil))
 		return
 	} else {
 		c.JSON(http.StatusOK, status.GetResponse(code, nil, res))
@@ -88,17 +88,17 @@ func EditUserById(c *gin.Context) {
 	uid := c.Param("uid")
 
 	if err := c.ShouldBindJSON(&user); err != nil || uid == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, err, nil))
 		return
 	}
 
 	if !utils.CheckAuthByUserId(c, uid) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
 	if code := user.Update(uid); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_USER_UPDATE, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_UPDATE, nil, nil))
 		return
 	}
 
@@ -111,17 +111,17 @@ func RemoveUserById(c *gin.Context) {
 	uid := c.Param("uid")
 
 	if uid == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_REQUEST_PARAM, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_REQUEST_PARAM, nil, nil))
 		return
 	}
 
 	if !utils.CheckAuthByUserId(c, uid) {
-		c.AbortWithStatusJSON(http.StatusBadRequest, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_NO_RIGHT, nil, nil))
 		return
 	}
 
 	if code := user.Delete(uid); code != status.SUCCESS {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, status.GetResponse(status.ERROR_USER_DELETE, nil, nil))
+		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_USER_DELETE, nil, nil))
 		return
 	}
 
