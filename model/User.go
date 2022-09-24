@@ -11,7 +11,7 @@ type UserEntity struct {
 	UserId    string `gorm:"type:varchar(32);not null " json:"userId" binding:"required,min=6,max=15" label:"用户id"`
 	Password  string `gorm:"type:varchar(100);not null " json:"password" binding:"required,min=6,max=15" label:"密码"`
 	UserRole  int    `gorm:"type:int;DEFAULT:1" json:"userRole" binding:"required" label:"角色类型"`
-	Gender    int    `gorm:"type:int;DEFAULT:1" json:"gender" binding:"required" label:"性别"`
+	Gender    int    `gorm:"type:int;DEFAULT:1" json:"gender" label:"性别"`
 	Signature string `gorm:"type:varchar(255) " json:"signature" label:"个人签名"`
 	Mobile    string `gorm:"type:varchar(16) " json:"mobile" label:"电话"`
 	Face      string `gorm:"type:varchar(255) " json:"face" label:"头像"`
