@@ -15,9 +15,9 @@ var closeChan = make(chan bool)
 func Chat(c *gin.Context, conn *websocket.Conn) {
 	uid := c.Param("uid")
 
-	if ok := utils.CheckAuthByUserId(c, uid); !ok {
-		return
-	}
+	// if ok := utils.CheckAuthByUserId(c, uid); !ok {
+	// 	return
+	// }
 
 	node, ok := globalNodeGroup.Add(uid, conn)
 	if !ok {
