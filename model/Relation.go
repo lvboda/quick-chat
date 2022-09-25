@@ -14,8 +14,8 @@ type RelationEntity struct {
 	RoleType      int             `gorm:"type:int;DEFAULT:1" json:"roleType" binding:"required" label:"角色类型"`
 	Memo          string          `gorm:"type:varchar(120);DEFAULT:NULL" json:"memo" label:"描述"`
 	Extend        string          `gorm:"-" json:"extend"`
-	FriendInfo    UserEntity      `gorm:"foreignKey:UserId;references:FriendId;" json:"friendInfo"`
-	ProposerInfo  UserEntity      `gorm:"foreignKey:UserId;references:UserId;" json:"proposerInfo"`
+	FriendInfo    UserEntity      `gorm:"foreignKey:UserId;references:UserId;" json:"friendInfo"`
+	ProposerInfo  UserEntity      `gorm:"foreignKey:UserId;references:FriendId;" json:"proposerInfo"`
 	CommunityInfo CommunityEntity `gorm:"foreignKey:CommunityId;references:FriendId;" json:"communityInfo"`
 }
 
