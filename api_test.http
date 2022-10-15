@@ -1,0 +1,129 @@
+### 登录 ok
+POST https://www.lvboda.cn:1001/api/v1/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "userId": "useruser2",
+    "password": "123456"
+}
+
+### 注册 ok
+POST https://www.lvboda.cn:1001/api/v1/user/register HTTP/1.1
+content-type: application/json
+
+{
+    "nickName": "用户1",
+    "userRole": 1,
+    "gender": 1,
+    "userId": "useruser1",
+    "password": "123456"
+}
+
+### 查单条 ok
+GET http://localhost:1001/api/v1/user/useruser1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0ZXN0dGVzdDEiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzY2MzM3NCwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzU3Njg3NH0.YEd0XsFZdvsHsgicvNz5Pf9l-JmD1OJI9KaMTdSO5pw
+
+### 修改个人信息 ok
+PUT http://localhost:1001/api/v1/user/useruser2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyNDQ1NSwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNzk1NX0.xwyIEGqaMDqcGfdQ38JGTWSWdz8WsMiJA1HQtc7idHw
+content-type: application/json
+
+{
+    "nickName": "修改用户2",
+    "userRole": 1,
+    "gender": 1,
+    "userId": "useruser2",
+    "password": "12345678"
+}
+
+### 注销 ok
+DELETE http://localhost:1001/api/v1/user/useruser2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyNDQ1NSwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNzk1NX0.xwyIEGqaMDqcGfdQ38JGTWSWdz8WsMiJA1HQtc7idHw
+
+### 发送验证信息 ok
+POST http://localhost:1001/api/v1/relation/validate HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyNDQ1NSwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNzk1NX0.xwyIEGqaMDqcGfdQ38JGTWSWdz8WsMiJA1HQtc7idHw
+
+{
+    "userId": "useruser2",
+    "friendId": "community1",
+    "memo": "我是user2，想加群",
+    "roleType": 1
+}
+
+### 查询验证列表 ok
+POST http://localhost:1001/api/v1/relation/list HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyNDQ1NSwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNzk1NX0.xwyIEGqaMDqcGfdQ38JGTWSWdz8WsMiJA1HQtc7idHw
+
+{
+    "friendId": "community1",
+    "relationType": 1,
+    "roleType": 2
+}
+
+### 查询好友列表 ok
+POST https://localhost:1001/api/v1/relation/list HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjEiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2NDExNjA1NywiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2NDAyOTU1N30.IisHKH5rSEKT956KYwGb_OrsByzeJHZxsvh0UykhL3k
+
+{
+    "friendId": "useruser1",
+    "relationType": 1,
+    "roleType": 1
+}
+
+### 添加好友 ok
+POST http://localhost:1001/api/v1/relation HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyMDQ4OCwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzMzk4OH0.YzA0I26tBY5g18bNoebUY_sJg1NagS7lQvivzdnrrZ8
+
+{
+    "userId": "community1",
+    "friendId": "useruser2",
+    "roleType": 2
+}
+
+### 删除好友 ok
+DELETE http://localhost:1001/api/v1/relation HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyMDQ4OCwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzMzk4OH0.YzA0I26tBY5g18bNoebUY_sJg1NagS7lQvivzdnrrZ8
+
+{
+    "userId": "community1",
+    "friendId": "useruser2",
+    "roleType": 2
+}
+
+### 新建群
+POST  http://localhost:1001/api/v1/community HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyMDQ4OCwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzMzk4OH0.YzA0I26tBY5g18bNoebUY_sJg1NagS7lQvivzdnrrZ8
+
+{
+    "communityId": "community3",
+    "name": "群3",
+    "ownerId": "useruser2"
+}
+
+### 修改群
+PUT  http://localhost:1001/api/v1/community/community1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyMzcwMiwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNzIwMn0.RlmeOIjeF8NJfYmkDpVdQ_u2-Wgh3eI30z4-MAqQEes
+
+{
+    "communityId": "community3",
+    "name": "群hhhh",
+    "ownerId": "useruser2"
+}
+
+### 删除群
+DELETE  http://localhost:1001/api/v1/community/097acdee8d5a4c2c9cd8767b8b3876a3 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyMjM3NywiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNTg3N30.GpZEk8Vi3IJFbOXN3mVFCjUlu0Gx4gm3w4-9sS4nkoA
+
+### 查群
+GET  http://localhost:1001/api/v1/community/community2 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VydXNlcjIiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTY2MzkyMzcwMiwiaXNzIjoicXVpY2stY2hhdCIsIm5iZiI6MTY2MzgzNzIwMn0.RlmeOIjeF8NJfYmkDpVdQ_u2-Wgh3eI30z4-MAqQEes
