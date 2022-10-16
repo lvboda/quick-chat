@@ -7,8 +7,8 @@ import (
 
 var (
 	ConfigFilePath   = ToAbsPath("../config/config.toml")
-	CertFilePath     = ToAbsPath("../config/tls.pem")
-	KeyFilePath      = ToAbsPath("../config/tls.key")
+	CertFilePath     = ToAbsPath("../config/tls.pem") // create your tls.pem
+	KeyFilePath      = ToAbsPath("../config/tls.key") // create your tls.key
 	StaticAssetsPath = ToAbsPath("../assets")
 	LogDirPath       = ToAbsPath("../logs")
 )

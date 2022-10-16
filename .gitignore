@@ -3,3 +3,5 @@ logs
 *.log
 assets
 main
+tls.key
+tls.pem
