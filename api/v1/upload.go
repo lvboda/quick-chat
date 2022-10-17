@@ -32,16 +32,16 @@ func UploadFile(c *gin.Context) {
 }
 
 // Upload 上传临时文件
-func UploadTempFile(c *gin.Context) {
+func UploadTmpFile(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusOK, status.GetResponse(status.ERROR_FILE_PARSE, err, nil))
 		return
 	}
 
-	// 文件路径命名规则: /assets/temp/年-月-日/fileName__uuid.suffix
+	// 文件路径命名规则: /assets/tmp/年-月-日/fileName__uuid.suffix
 	date := time.Now().Format("2006-01-02")
-	src := utils.CreateSafeFilePath([]string{utils.StaticAssetsPath, "fulltime", date}, utils.ToHashFileName(file.Filename))
+	src := utils.CreateSafeFilePath([]string{utils.StaticAssetsPath, "tmp", date}, utils.ToHashFileName(file.Filename))
 
 	err = c.SaveUploadedFile(file, src)
 	if err != nil {
