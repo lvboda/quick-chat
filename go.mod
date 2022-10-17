@@ -10,9 +10,10 @@ require (
 	github.com/gorilla/websocket v1.5.0
 	github.com/pelletier/go-toml/v2 v2.0.5
 	github.com/sirupsen/logrus v1.9.0
+	gopkg.in/fatih/set.v0 v0.2.1
 	gorm.io/driver/mysql v1.3.6
 	gorm.io/gorm v1.23.8
-	gopkg.in/fatih/set.v0 v0.2.1
+	github.com/robfig/cron v1.2.0
 )
 
 require (

@@ -14,6 +14,7 @@ func init() {
 	initLogger()
 	initConfig()
 	initDB()
+	initCron()
 }
 
 // createApp
