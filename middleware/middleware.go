@@ -7,5 +7,4 @@ import (
 func RegisterMiddleware(app *gin.Engine) {
 	app.Use(corsMiddleware())
 	app.Use(jwtMiddleware())
-	app.Use(headerMiddleware())
 }
