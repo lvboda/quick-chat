@@ -1,6 +1,6 @@
 [server]
   mode = "release"
-  port = ":1001"
+  port = ":3001"
   jwt_key = "quick-chat"
   token_aging = 86400
 
