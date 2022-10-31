@@ -6,8 +6,10 @@ import { wait } from "@/utils/wait";
 
 import type { UserInfo } from "@/api/user";
 
-const SOCKET_URL = "wss://www.lvboda.cn:1001";
-// const SOCKET_URL = "wss://localhost:1001";
+const SOCKET_URL = new URL(
+  `${import.meta.env.BASE_URL}ws`,
+  `wss://${location.host}`
+);
 
 export type Message = {
   id: string; // id

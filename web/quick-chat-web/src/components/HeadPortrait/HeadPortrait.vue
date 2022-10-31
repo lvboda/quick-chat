@@ -5,17 +5,14 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const defaultFaceURL = `${window.location.origin}${
+  import.meta.env.BASE_URL
+}apis/assets/fulltime/default-face.png`;
 </script>
 
 <template>
   <div class="head-portrait-box">
-    <img
-      :src="
-        props.src
-          ? props.src
-          : 'https://www.lvboda.cn:1001/assets/fulltime/default-face.png'
-      "
-    />
+    <img :src="props.src ? props.src : defaultFaceURL" />
     <slot name="point" />
   </div>
 </template>

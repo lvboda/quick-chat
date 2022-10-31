@@ -7,7 +7,7 @@ import type { UserInfo } from "@/api/user";
 const router = useRouter();
 
 const request = axios.create({
-  baseURL: import.meta.env.VITE_HTTP_URL,
+  baseURL: `${import.meta.env.BASE_URL}apis`,
 });
 
 export enum STATUS_CODE {
