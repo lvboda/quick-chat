@@ -10,6 +10,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 export default defineConfig(() => {
   return {
+    base: "/quick-chat/",
     server: {
       port: 5173,
       strictPort: true,
