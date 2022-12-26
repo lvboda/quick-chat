@@ -64,7 +64,7 @@ web端音视频实时通讯的demo项目，适合学习研究和二次开发。
 ├── service                                         service层
 ├── utils                                           工具包
 ├── web                                             web端
-│   ├── dist                                        打包输出
+│   ├── dist                                        打包输出目录
 │   ├── node_modules                                三方库
 │   ├── public                                      静态资源
 │   ├── src                                         前端开发目录
@@ -92,7 +92,7 @@ web端音视频实时通讯的demo项目，适合学习研究和二次开发。
 ### 技术选型
 **后端**：go + gin + gorm + jwt-go + websocket ...
 
-**前端**：vue + vue-router + pinia + axios + simple-peer ...
+**前端**：ts + vue + vue-router + pinia + axios + simple-peer ...
 
 **数据库**：mysql
 
